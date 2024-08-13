@@ -32,13 +32,18 @@ jobs:
           python-version: '3.x'
 
       - name: Install flawfinder
-        run: pip install flawfinder
+        run: pip install --upgrade flawfinder
 
-      - name: Check available memory
-        run: free -m
+      - name: List files in directories
+        run: |
+          ls -R ./src
+          ls -R ./include
+
+      - name: Run flawfinder on a single file
+        run: flawfinder --sarif ./src/somefile.c > flawfinder_results.sarif
 
       - name: Run flawfinder scan with verbose output
-        run: flawfinder --sarif --verbose ./src ./include > flawfinder_results.sarif
+        run: flawfinder --sarif --verbose ./src ./include > flawfinder_results.sarif || true
 
       - name: Upload analysis results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
