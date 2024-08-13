@@ -26,16 +26,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set encoding variables
-        run: |
-          echo "PYTHONUTF8=0" >> $GITHUB_ENV
-          echo "LC_ALL=C.ISO-8859-1" >> $GITHUB_ENV
+      - name: Install Python 2
+        run: sudo apt-get install python2
 
       - name: flawfinder_scan
-        uses: david-a-wheeler/flawfinder@8e4a779ad59dbfaee5da586aa9210853b701959c
-        with:
-          arguments: '--sarif ./'
-          output: 'flawfinder_results.sarif'
+        run: python2 flawfinder --sarif ./ > flawfinder_results.sarif
 
       - name: Upload analysis results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
