@@ -29,7 +29,8 @@ jobs:
 
     - name: "Build the project"
       run: |
-        make # Use the Makefile to build the project
+        cd Software/OM/omapi/src # Navigate to the directory containing the Makefile
+        make
 
     - name: "Perform CodeQL Analysis"
       uses: github/codeql-action/analyze@v2
