@@ -27,6 +27,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential libudev-dev
 
+    - name: "Patch source code"
+      run: |
+        echo '#include <stdbool.h>' | cat - Software/OM/omapi/src/omapi-devicefinder-linux.c > temp && mv temp Software/OM/omapi/src/omapi-devicefinder-linux.c
+
     - name: "Build the project"
       run: |
         cd Software/OM/omapi/src # Navigate to the directory containing the Makefile
