@@ -26,12 +26,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run flawfinder in Docker
-        run: |
-          docker run --rm -v $PWD:/src david-a-wheeler/flawfinder:latest flawfinder --sarif /src > flawfinder_results.sarif
+      - name: Install Python 2
+        run: sudo apt-get update && sudo apt-get install python2
+
+      - name: Install pip for Python 2
+        run: sudo apt-get install python2-pip
+
+      - name: Install flawfinder
+        run: pip2 install flawfinder
+
+      - name: Run flawfinder scan
+        run: python2 -m flawfinder --sarif ./ > flawfinder_results.sarif
 
       - name: Upload analysis results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ${{github.workspace}}/flawfinder_results.sarif
+
 
