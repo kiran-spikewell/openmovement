@@ -29,12 +29,12 @@ jobs:
 
     - name: "Patch source code"
       run: |
-        echo '#include <stdbool.h>' | cat - Software/OM/omapi/src/omapi-devicefinder-linux.c > temp && mv temp Software/OM/omapi/src/omapi-devicefinder-linux.c
+        find . -name "omapi-devicefinder-linux.c" -exec sed -i '1i#include <stdbool.h>' {} \;
 
     - name: "Build the project"
       run: |
-        cd Software/OM/omapi/src # Navigate to the directory containing the Makefile
-        make
+        # List all directories containing Makefiles
+        find . -name 'Makefile' -execdir make \;
 
     - name: "Perform CodeQL Analysis"
       uses: github/codeql-action/analyze@v2
