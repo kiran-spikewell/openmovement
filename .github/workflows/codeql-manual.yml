@@ -33,8 +33,19 @@ jobs:
 
     - name: "Build the project"
       run: |
-        # List all directories containing Makefiles
-        find . -name 'Makefile' -execdir make \;
+        # Build each Makefile
+        make -C Software/OM/jomapi
+        make -C Software/AX3/convert
+        make -C Software/AX3/omconvert
+        make -C Software/WAX3/waxrec
+        make -C Software/OM/omapi/src
+        make -C Software/WAX3/slip2udp
+        make -C Software/BuildAX/bin2csv
+        make -C Software/AX3/cwa-convert/c
+        make -C Software/OM/omapi/examples
+        make -C Firmware/AX3/Firmware/src/CWA.X
+        make -C Firmware/AX6/Firmware/src/CWA.X
+        make -C Firmware/WAX3/Firmware/src/WAX.X
 
     - name: "Perform CodeQL Analysis"
       uses: github/codeql-action/analyze@v2
