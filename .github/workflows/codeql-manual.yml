@@ -41,7 +41,7 @@ jobs:
         make -C Software/BuildAX/bin2csv
         make -C Software/AX3/cwa-convert/c
         # make -C Software/OM/omapi/examples
-        make -C Firmware/AX3/Firmware/src/CWA.X
+        # make -C Firmware/AX3/Firmware/src/CWA.X
         make -C Firmware/AX6/Firmware/src/CWA.X
         make -C Firmware/WAX3/Firmware/src/WAX.X
     - name: "Perform CodeQL Analysis"
