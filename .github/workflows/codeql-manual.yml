@@ -2,11 +2,11 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "main", "master" ] # Adjust if necessary
+    branches: [ "main", "master" ] 
   pull_request:
     branches: [ "main", "master" ]
   schedule:
-    - cron: '0 0 * * 1' # Weekly scan
+    - cron: '0 0 * * 1'
 
 jobs:
   codeql:
@@ -20,12 +20,12 @@ jobs:
     - name: "Initialize CodeQL"
       uses: github/codeql-action/init@v2
       with:
-        languages: "c" # Scan C language code
+        languages: ["c", "java"]
 
     - name: "Set up environment"
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libudev-dev
+        sudo apt-get install -y build-essential libudev-dev openjdk-11-jdk
 
     - name: "Patch source code"
       run: |
@@ -34,7 +34,7 @@ jobs:
     - name: "Build the project"
       run: |
         # Build each Makefile
-        make -C Software/OM/jomapi
+        make -C Software/OM/jomapi JFLAGS="-Xlint:deprecation"
         make -C Software/AX3/convert
         make -C Software/AX3/omconvert
         make -C Software/WAX3/waxrec
