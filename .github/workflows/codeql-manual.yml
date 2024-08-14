@@ -1,37 +1,38 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
   push:
-    branches: [ "main", "master" ] 
+    branches: [ master ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ master ]
   schedule:
     - cron: '0 0 * * 1'
 
 jobs:
   codeql:
-    name: "CodeQL Analysis"
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'cpp', 'java' ]
+    
     steps:
-    - name: "Checkout repository"
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: "Initialize CodeQL"
-      uses: github/codeql-action/init@v3
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
       with:
-        languages: c
+        languages: ${{ matrix.language }}
 
-    - name: "Set up environment"
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential libudev-dev openjdk-11-jdk
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
 
-    - name: "Patch source code"
-      run: |
-        find . -name "omapi-devicefinder-linux.c" -exec sed -i '1i#include <stdbool.h>' {} \;
-
-    - name: "Build the project"
+    - name: Build project
       run: |
         # Build each Makefile
         make -C Software/OM/jomapi JFLAGS="-Xlint:deprecation"
@@ -47,5 +48,5 @@ jobs:
         make -C Firmware/AX6/Firmware/src/CWA.X
         make -C Firmware/WAX3/Firmware/src/WAX.X
 
-    - name: "Perform CodeQL Analysis"
+    - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
