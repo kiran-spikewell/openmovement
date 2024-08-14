@@ -34,7 +34,7 @@ jobs:
         # Build each Makefile
         # make -C Software/OM/jomapi
         make -C Software/AX3/convert
-        make -C Software/AX3/omconvert
+        # make -C Software/AX3/omconvert
         make -C Software/WAX3/waxrec
         make -C Software/OM/omapi/src
         make -C Software/WAX3/slip2udp
