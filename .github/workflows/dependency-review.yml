@@ -17,12 +17,13 @@ jobs:
 
       - name: 'Set up Git'
         run: |
-          git remote add upstream https://github.com/digitalinteraction/openmovement.git
+          git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPO.git
           git fetch upstream
 
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v4
         with:
-          base_ref: 'upstream/master'  # Compare with the original repository's master branch
-          head_ref: 'HEAD'  # Compare with the current branch in the fork
+          base-ref: 'upstream/master'  # Compare with the original repository's master branch
+          head-ref: 'HEAD'  # Compare with the current branch in the fork
           comment-summary-in-pr: always
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
