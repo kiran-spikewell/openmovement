@@ -22,7 +22,7 @@ jobs:
       with:
         languages: "c" # Scan C language code
         # Include custom queries for web tracking detection
-        queries: +security-extended,security-and-quality,"./.github/codeql-queries"
+        queries: +security-extended,security-and-quality,"${{ github.workspace }}/.github/codeql-queries"
 
     - name: "Set up environment"
       run: |
