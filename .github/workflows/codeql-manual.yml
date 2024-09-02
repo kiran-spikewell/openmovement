@@ -2,7 +2,7 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "main", "master" ] # Adjust if necessary
+    branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
   schedule:
@@ -21,28 +21,27 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: "c" # Scan C language code
+        # Include custom queries for web tracking detection
+        queries: +security-extended,security-and-quality,"./.github/codeql-queries"
 
     - name: "Set up environment"
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential libudev-dev
+
     - name: "Patch source code"
       run: |
         find . -name "omapi-devicefinder-linux.c" -exec sed -i '1i#include <stdbool.h>' {} \;
+
     - name: "Build the project"
       run: |
         # Build each Makefile
-        # make -C Software/OM/jomapi
         make -C Software/AX3/convert
-        # make -C Software/AX3/omconvert
         make -C Software/WAX3/waxrec
         make -C Software/OM/omapi/src
         make -C Software/WAX3/slip2udp
         make -C Software/BuildAX/bin2csv
         make -C Software/AX3/cwa-convert/c
-        # make -C Software/OM/omapi/examples
-        # make -C Firmware/AX3/Firmware/src/CWA.X
-        # make -C Firmware/AX6/Firmware/src/CWA.X
-        # make -C Firmware/WAX3/Firmware/src/WAX.X
+
     - name: "Perform CodeQL Analysis"
       uses: github/codeql-action/analyze@v3
