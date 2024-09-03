@@ -1,0 +1,25 @@
+/**
+ * @name Detect Google Analytics Tracking
+ * @description Detects the presence of Google Analytics scripts in JavaScript code.
+ * @kind problem
+ * @problem.severity warning
+ * @tags web, tracking, privacy
+ */
+
+import javascript
+
+/**
+ * Finds occurrences of Google Analytics initialization and API calls.
+ */
+from
+  FunctionCall call,
+  string s
+where
+  // Detect Google Analytics or gtag function calls
+  call.getTarget().(MemberAccess).getQualifier().toString() = "ga" or
+  call.getTarget().(MemberAccess).getQualifier().toString() = "gtag" or
+  call.getTarget().getQualifiedName().toString().matches(".*GoogleAnalyticsObject.*") or
+  // Detect URL references to Google Analytics libraries
+  s.matches(".*google-analytics.com/analytics.js.*") or
+  s.matches(".*googletagmanager.com/gtag/js.*")
+select call, "Possible use of Google Analytics tracking: " + call.getTarget().toString()
