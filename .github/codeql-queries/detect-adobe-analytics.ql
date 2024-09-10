@@ -1,6 +1,6 @@
 /**
  * @name Detect Adobe Analytics Web Trackers and IP Tracking
- * @description Finds references to Adobe Analytics scripts and potential IP tracking in JavaScript code.
+ * @description Finds references to Adobe Analytics scripts and potential IP tracking only available in JavaScript code.
  * @kind path-problem
  * @id js/detect-adobe-analytics-ip-tracking
  */
