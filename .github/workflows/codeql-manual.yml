@@ -1,3 +1,4 @@
+
 name: "CodeQL"
 
 on:
@@ -20,19 +21,17 @@ jobs:
     - name: "Initialize CodeQL"
       uses: github/codeql-action/init@v3
       with:
-        languages: ${{ matrix.language }} # Scan C language code
+        languages: "c" # Scan C language code
         # Include custom queries for web tracking detection
-        queries: +security-extended,security-and-quality,./.github/codeql-queries/find_http_https_urls.ql
+        queries: +security-extended,security-and-quality,./.github/codeql-queries
 
     - name: "Set up environment"
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential libudev-dev
-
     - name: "Patch source code"
       run: |
         find . -name "omapi-devicefinder-linux.c" -exec sed -i '1i#include <stdbool.h>' {} \;
-
     - name: "Build the project"
       run: |
         # Build each Makefile
@@ -42,6 +41,5 @@ jobs:
         make -C Software/WAX3/slip2udp
         make -C Software/BuildAX/bin2csv
         make -C Software/AX3/cwa-convert/c
-
     - name: "Perform CodeQL Analysis"
       uses: github/codeql-action/analyze@v3
